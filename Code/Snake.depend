@@ -440,3 +440,46 @@
 1680702465 source:c:\users\admin\onedrive\máy tính\japit\snake\apple.cpp
 	"Apple.h"
 
+1680702465 source:c:\users\admin\onedrive\máy tính\japit\snake\code\apple.cpp
+	"Apple.h"
+
+1680702959 c:\users\admin\onedrive\máy tính\japit\snake\code\apple.h
+	"Constant.h"
+
+1680702405 c:\users\admin\onedrive\máy tính\japit\snake\code\constant.h
+	<SDL.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<SDL_image.h>
+	<iostream>
+	<cstdlib>
+	<ctime>
+	<deque>
+
+1680702970 source:c:\users\admin\onedrive\máy tính\japit\snake\code\board.cpp
+	"Board.h"
+
+1680702958 c:\users\admin\onedrive\máy tính\japit\snake\code\board.h
+	"Constant.h"
+	"Snake.h"
+	"Apple.h"
+
+1680703426 c:\users\admin\onedrive\máy tính\japit\snake\code\snake.h
+	"Constant.h"
+	"Apple.h"
+
+1680708734 source:c:\users\admin\onedrive\máy tính\japit\snake\code\game.cpp
+	"Game.h"
+
+1680702520 c:\users\admin\onedrive\máy tính\japit\snake\code\game.h
+	"Snake.h"
+	"Board.h"
+	"Apple.h"
+	"Constant.h"
+
+1680419897 source:c:\users\admin\onedrive\máy tính\japit\snake\code\main.cpp
+	"Game.h"
+
+1680703684 source:c:\users\admin\onedrive\máy tính\japit\snake\code\snake.cpp
+	"Snake.h"
+
