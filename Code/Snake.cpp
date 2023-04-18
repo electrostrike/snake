@@ -1,6 +1,11 @@
 #include "Snake.h"
 
 Snake::Snake() {
+    Init();
+}
+
+void Snake::Init() {
+    snake.clear();
     snake.push_front({15, 11});
     snake.push_front({16, 11});
     snake.push_front({17, 11});
@@ -17,11 +22,15 @@ void Snake::SetEatApple() {
     eatApple = !eatApple;
 }
 
-void Snake::SetDir(Direction newDir) {
-    dir = newDir;
+bool Snake::SetDir(Direction newDir) {
+    if (abs(dir - newDir) != 2) {
+        dir = newDir;
+        return 1;
+    }
+    return 0;
 }
 
-deque <Point> Snake::GetSnake() {
+const deque <Point>& Snake::GetSnake() {
     return snake;
 }
 
@@ -29,7 +38,7 @@ int Snake::GetLength() {
     return snake.size();
 }
 
-void Snake::MoveSnake(Apple apple) {
+void Snake::MoveSnake(Apple& apple) {
     Point newHead = snake.front();
     if (dir == UP) {
         newHead.y--;
@@ -48,16 +57,19 @@ void Snake::MoveSnake(Apple apple) {
     }
 }
 
-void Snake::HandleCollision() {
+bool Snake::HandleCollision() {
     // Out of bound
     Point head = snake.front();
-    if (head.x < 0 || head.x == BOARD_WIDTH || head.y < 0 || head.y == BOARD_HEIGHT) {
-        exit(0);
+    if (head.x < 0 || head.x == BOARD_WIDTH || head.y < 2 || head.y == BOARD_HEIGHT) {
+        snake.pop_front();
+        return 1;
     }
     // Self collision
     for (int i = 1; i < snake.size(); i++) {
         if (head == snake[i]) {
-            exit(0);
+            snake.pop_front();
+            return 1;
         }
     }
+    return 0;
 }

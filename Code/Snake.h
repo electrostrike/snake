@@ -12,14 +12,15 @@ class Snake {
 
     public:
         Snake();
+        void Init();
         bool GetEatApple();
         void SetEatApple();
-        void SetDir(Direction newDir);
+        bool SetDir(Direction newDir);
         int GetLength();
-        deque <Point> GetSnake();
+        const deque <Point>& GetSnake();
 
-        void MoveSnake(Apple apple);
-        void HandleCollision();
+        void MoveSnake(Apple& apple);
+        bool HandleCollision();
 };
 
 #endif // SNAKE_H

@@ -440,13 +440,13 @@
 1680702465 source:c:\users\admin\onedrive\máy tính\japit\snake\apple.cpp
 	"Apple.h"
 
-1680702465 source:c:\users\admin\onedrive\máy tính\japit\snake\code\apple.cpp
+1681287256 source:c:\users\admin\onedrive\máy tính\japit\snake\code\apple.cpp
 	"Apple.h"
 
-1680702959 c:\users\admin\onedrive\máy tính\japit\snake\code\apple.h
+1681287255 c:\users\admin\onedrive\máy tính\japit\snake\code\apple.h
 	"Constant.h"
 
-1680702405 c:\users\admin\onedrive\máy tính\japit\snake\code\constant.h
+1681392255 c:\users\admin\onedrive\máy tính\japit\snake\code\constant.h
 	<SDL.h>
 	<SDL_ttf.h>
 	<SDL_mixer.h>
@@ -455,23 +455,26 @@
 	<cstdlib>
 	<ctime>
 	<deque>
+	<string>
+	<fstream>
 
-1680702970 source:c:\users\admin\onedrive\máy tính\japit\snake\code\board.cpp
+1681392900 source:c:\users\admin\onedrive\máy tính\japit\snake\code\board.cpp
 	"Board.h"
 
-1680702958 c:\users\admin\onedrive\máy tính\japit\snake\code\board.h
+1681324566 c:\users\admin\onedrive\máy tính\japit\snake\code\board.h
 	"Constant.h"
 	"Snake.h"
 	"Apple.h"
+	"Texture.h"
 
-1680703426 c:\users\admin\onedrive\máy tính\japit\snake\code\snake.h
+1681325429 c:\users\admin\onedrive\máy tính\japit\snake\code\snake.h
 	"Constant.h"
 	"Apple.h"
 
-1680708734 source:c:\users\admin\onedrive\máy tính\japit\snake\code\game.cpp
+1681393486 source:c:\users\admin\onedrive\máy tính\japit\snake\code\game.cpp
 	"Game.h"
 
-1680702520 c:\users\admin\onedrive\máy tính\japit\snake\code\game.h
+1681393039 c:\users\admin\onedrive\máy tính\japit\snake\code\game.h
 	"Snake.h"
 	"Board.h"
 	"Apple.h"
@@ -480,6 +483,12 @@
 1680419897 source:c:\users\admin\onedrive\máy tính\japit\snake\code\main.cpp
 	"Game.h"
 
-1680703684 source:c:\users\admin\onedrive\máy tính\japit\snake\code\snake.cpp
+1681326640 source:c:\users\admin\onedrive\máy tính\japit\snake\code\snake.cpp
 	"Snake.h"
+
+1681285543 source:c:\users\admin\onedrive\máy tính\japit\snake\code\texture.cpp
+	"Texture.h"
+
+1681284630 c:\users\admin\onedrive\máy tính\japit\snake\code\texture.h
+	"Constant.h"
 

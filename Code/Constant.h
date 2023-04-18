@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <deque>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -28,15 +30,18 @@ struct Point {
 };
 
 enum Direction {
-    UP,
+    UP = 0,
+    RIGHT,
     DOWN,
-    LEFT,
-    RIGHT
+    LEFT
 };
 
 const SDL_Color GREEN_1 = {168, 247, 120, 255};
 const SDL_Color GREEN_2 = {158, 237, 110, 255};
 const SDL_Color BLUE = {60, 108, 186, 255};
 const SDL_Color RED = {255, 0, 0, 255};
+const SDL_Color WHITE = {255, 255, 255, 255};
+const SDL_Color BLACK = {0, 0, 0, 255};
+const SDL_Color GRAY = {128, 128, 128, 255};
 
 #endif // CONSTANT_H

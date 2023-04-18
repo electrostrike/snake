@@ -12,17 +12,16 @@ class Game {
         SDL_Window* window;
         SDL_Renderer* renderer;
         TTF_Font* font;
-        SDL_Color textColor = {255, 255, 255};
 
         //Game
-        int score, highScore;
-        bool hasSFX, quit;
+        int score, highScore, upTime;
+        bool quit, play, sfx;
         Apple apple;
         Snake snake;
         Board board;
 
         //SFX
-        Mix_Music* bgm;
+        Mix_Chunk* moving;
         Mix_Chunk* scoring;
         Mix_Chunk* gameOver;
 
@@ -30,11 +29,10 @@ class Game {
         Game();
         ~Game();
 
-        SDL_Renderer* GetRenderer();
-
-        void LoadMedia();
-        void Run();
         bool Init();
+        bool LoadMedia();
+        void Run();
+        void RunGame();
 };
 
 #endif // GAME

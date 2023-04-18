@@ -2,22 +2,30 @@
 
 Game::Game() {
     apple.GenerateApple(snake.GetSnake());
+    highScore = 0;
+
+    ifstream fi("resources/HighScore.txt");
+    string line;
+    while (getline(fi, line)) {
+        highScore = stoi(line);
+    }
+    fi.close();
 }
 
 Game::~Game() {
-//    TTF_CloseFont(font);
-//    font = NULL;
+    TTF_CloseFont(font);
+    font = NULL;
     SDL_DestroyRenderer(renderer);
     renderer = NULL;
     SDL_DestroyWindow(window);
     window = NULL;
 
-//    Mix_FreeMusic(bgm);
-//    bgm = NULL;
-//    Mix_FreeChunk(scoring);
-//    scoring = NULL;
-//    Mix_FreeChunk(gameOver);
-//    gameOver = NULL;
+    Mix_FreeChunk(moving);
+    moving = NULL;
+    Mix_FreeChunk(scoring);
+    scoring = NULL;
+    Mix_FreeChunk(gameOver);
+    gameOver = NULL;
 
     SDL_Quit();
     IMG_Quit();
@@ -25,8 +33,7 @@ Game::~Game() {
     Mix_Quit();
 }
 
-bool Game::Init()
-{
+bool Game::Init() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         cout << "Unable to initialize SDL\n";
         cout << "Error: " << SDL_GetError() << "\n";
@@ -64,12 +71,39 @@ bool Game::Init()
     return 1;
 }
 
-void Game::LoadMedia() {
-
+bool Game::LoadMedia() {
+    font = TTF_OpenFont("resources/PressStart2P-vaV7.ttf", 20);
+    if (font == NULL)
+    {
+        cout << "Failed to load font\n";
+        cout << "SDL_ttf error: " << TTF_GetError() << "\n";
+        return 0;
+    }
+    moving = Mix_LoadWAV("resources/moving.mp3");
+    if (moving == NULL)
+    {
+        cout << "Failed to load music\n";
+        cout << "SDL_mixer error: " << Mix_GetError() << "\n";
+        return 0;
+    }
+    scoring = Mix_LoadWAV("resources/scoring.mp3");
+    if (scoring == NULL)
+    {
+        cout << "Failed to load music\n";
+        cout << "SDL_mixer error: " << Mix_GetError() << "\n";
+        return 0;
+    }
+    gameOver = Mix_LoadWAV("resources/gameOver.mp3");
+    if (gameOver == NULL)
+    {
+        cout << "Failed to load music\n";
+        cout << "SDL_mixer error: " << Mix_GetError() << "\n";
+        return 0;
+    }
+    return 1;
 }
 
-void Game::Run()
-{
+void Game::Run() {
     if (!Init())
     {
         cout << "Failed to initialize";
@@ -77,9 +111,14 @@ void Game::Run()
     }
 
     srand(time(NULL));
-    LoadMedia();
+    if (!LoadMedia()) {
+        cout << "Failed to load media";
+        return;
+    }
     SDL_Event e;
-    int upTime = SDL_GetTicks();
+    quit = 0;
+    play = 0;
+    sfx = 1;
     while (!quit)
     {
         while (SDL_PollEvent(&e) != 0)
@@ -90,20 +129,68 @@ void Game::Run()
             {
                 switch(e.key.keysym.sym)
                 {
+                    case SDLK_r:
+                        play = 1;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+        SDL_RenderClear(renderer);
+        board.FillBlack(renderer);
+        board.DrawPressR(renderer, font);
+        SDL_RenderPresent(renderer);
+
+        if (play) {
+            RunGame();
+        }
+    }
+}
+
+void Game::RunGame() {
+    SDL_Event e;
+    upTime = SDL_GetTicks();
+    score = 0;
+    while (play)
+    {
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT) {
+                quit = 1;
+                play = 0;
+            }
+            else if(e.type == SDL_KEYDOWN)
+            {
+                switch(e.key.keysym.sym)
+                {
                     case SDLK_UP:
-                        snake.SetDir(UP);
+                        if (snake.SetDir(UP) && sfx) {
+                            Mix_PlayChannel(-1, moving, 0);
+                        }
                         break;
 
                     case SDLK_DOWN:
-                        snake.SetDir(DOWN);
+                        if (snake.SetDir(DOWN) && sfx) {
+                            Mix_PlayChannel(-1, moving, 0);
+                        }
                         break;
 
                     case SDLK_LEFT:
-                        snake.SetDir(LEFT);
+                        if (snake.SetDir(LEFT) && sfx) {
+                            Mix_PlayChannel(-1, moving, 0);
+                        }
                         break;
 
                     case SDLK_RIGHT:
-                        snake.SetDir(RIGHT);
+                        if (snake.SetDir(RIGHT) && sfx) {
+                            Mix_PlayChannel(-1, moving, 0);
+                        }
+                        break;
+
+                    case SDLK_m:
+                        sfx = !sfx;
                         break;
 
                     default:
@@ -114,20 +201,64 @@ void Game::Run()
 
         SDL_RenderClear(renderer);
         board.DrawBoard(renderer, snake, apple);
+        board.DrawUI(renderer, font, score, highScore);
         SDL_RenderPresent(renderer);
 
-        if (SDL_GetTicks() > upTime + 200) {
+        if (SDL_GetTicks() > upTime + 150) {
             snake.MoveSnake(apple);
-            snake.HandleCollision();
+            if (snake.HandleCollision()) {
+                if (sfx) {
+                    Mix_PlayChannel(-1, gameOver, 0);
+                }
+                if (score == highScore) {
+                    ofstream fo("resources/HighScore.txt");
+                    fo << to_string(highScore);
+                    fo.close();
+                }
+                play = 0;
+            }
             if (snake.GetEatApple()) {
+                if (sfx) {
+                    Mix_PlayChannel(-1, scoring, 0);
+                }
                 apple.GenerateApple(snake.GetSnake());
                 snake.SetEatApple();
+                score++;
+                if (score > highScore) {
+                    highScore = score;
+                }
             }
             upTime = SDL_GetTicks();
         }
     }
-}
 
-SDL_Renderer* Game::GetRenderer() {
-    return renderer;
+    while (!play && !quit) {
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT) {
+                quit = 1;
+                play = 1;
+            }
+            else if (e.type == SDL_KEYDOWN)
+            {
+                switch(e.key.keysym.sym)
+                {
+                    case SDLK_r:
+                        play = 1;
+                        snake.Init();
+                        apple.GenerateApple(snake.GetSnake());
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        SDL_RenderClear(renderer);
+        board.DrawGameOver(renderer, snake);
+        board.DrawPressR(renderer, font);
+        board.DrawUI(renderer, font, score, highScore);
+        SDL_RenderPresent(renderer);
+    }
 }
